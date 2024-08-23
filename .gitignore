@@ -1,0 +1,9 @@
+*.egg-info
+/.venv
+**/__pycache__
+/dist
+.coverage
+
+# pyevn
+.python-version
+#
