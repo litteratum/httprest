@@ -25,10 +25,11 @@ pip install httprest
 
 
 ## HTTP client
-The library exposes an `HTTPClient` interface.
-There is also an `http.urllib_client.UrllibHTTPClient` implementation that is used by default.
+The library exposes an `HTTPClient` interface and provides two implementations for it:
+  1. `http.urllib_client.UrllibHTTPClient`: the default implementation, uses the `urllib` library under the hood
+  2. `http.requests_client.RequestsHTTPClient`: uses the `requests` library under the hood
 
-You may define your own HTTP client like this:
+You may also define your own HTTP client like this:
 ```python
 from httprest.http import HTTPClient, HTTPResponse
 
