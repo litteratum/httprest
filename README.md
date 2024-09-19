@@ -42,3 +42,16 @@ And then you simply use it in the API client:
 
 api = MyAPI(..., http_client=MyHTTPClient())
 ```
+
+### Fake client
+The library provides the `http.fake_client` module containing `FakeHTTPClient` class.
+That class may be used for API testing. Example:
+```python
+from httprest.http.fake_client import FakeHTTPClient, HTTPResponse
+
+http_client = FakeHTTPClient(responses=[HTTPResponse(200, b"", headers={})])
+api = MyAPI(..., http_client=http_client)
+api.operation()
+# assert your expectations here
+assert http_client.history == [...]
+```
