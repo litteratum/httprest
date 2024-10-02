@@ -4,6 +4,7 @@ import json as jsonlib
 import logging
 from abc import ABC, abstractmethod
 from typing import Optional
+from urllib.parse import urlencode
 
 from .auth import BaseAuth
 
@@ -98,6 +99,7 @@ class HTTPClient(ABC):
         url: str,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
+        params: Optional[dict] = None,
         auth: Optional[BaseAuth] = None,
     ) -> HTTPResponse:
         # pylint: disable=too-many-arguments
@@ -107,10 +109,13 @@ class HTTPClient(ABC):
         :param url: API URL
         :param json: JSON data to post
         :param headers: headers
+        :param params: query parameters. If provided, the url will be extended
         :param auth: authorization to use. If provided, the headers will be
           extended
         """
         logging.info("%s %s", method.upper(), url)
         if auth:
             headers = auth.apply(headers or {})
+        if params:
+            url = f"{url}?{urlencode(params)}"
         return self._request(method, url, json, headers=headers)
