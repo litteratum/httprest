@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Optional, Union
 from httprest.http.base import HTTPResponse
 
 from .base import HTTPClient, HTTPTimeoutError
+from .cert import ClientCertificate
 
 
 class FakeHTTPClient(HTTPClient):
@@ -23,7 +24,9 @@ class FakeHTTPClient(HTTPClient):
         url: str,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
+        cert: Optional[ClientCertificate] = None,
     ) -> HTTPResponse:
+        # pylint:disable=too-many-arguments
         self.history.append(
             {
                 "_method": "_request",
@@ -31,6 +34,7 @@ class FakeHTTPClient(HTTPClient):
                 "url": url,
                 "json": json,
                 "headers": headers,
+                "cert": cert,
             }
         )
         if not self._responses:

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
   * `http.auth` module. Support for Basic auth
   * `params` argument for the `HTTPClient.request` to simplify query parameters usage
+  * `cert` argument for the `HTTPClient.request` to allow client side certificates
 
 ## [0.1.2] - 2024-09-20
 ### Added

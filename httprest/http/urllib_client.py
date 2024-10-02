@@ -14,6 +14,7 @@ from .base import (
     HTTPResponse,
     HTTPTimeoutError,
 )
+from .cert import ClientCertificate
 
 
 class UrllibHTTPClient(HTTPClient):
@@ -26,6 +27,7 @@ class UrllibHTTPClient(HTTPClient):
         url: str,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
+        cert: Optional[ClientCertificate] = None,
     ) -> HTTPResponse:
         headers = headers or {}
         data = None
