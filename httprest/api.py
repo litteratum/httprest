@@ -56,3 +56,6 @@ class API:
 
     def _build_url(self, endpoint: str) -> str:
         return f"{self._base_url}/{endpoint.strip('/')}"
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(base_url='{self._base_url}')"

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
   * `http.HTTPError` exception
   * `HTTPResponse.raise_for_status` method
+  * `API.__str__` method
 
 ### Changed
   * Split `http.base` module into separate modules like `response.py` and `errors.py`
