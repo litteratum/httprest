@@ -11,6 +11,7 @@ from .base import (
     HTTPResponse,
     HTTPTimeoutError,
 )
+from .cert import ClientCertificate
 
 
 class RequestsHTTPClient(HTTPClient):
@@ -26,11 +27,26 @@ class RequestsHTTPClient(HTTPClient):
         url: str,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
+        cert: Optional[ClientCertificate] = None,
     ) -> HTTPResponse:
+        # pylint: disable=too-many-arguments
+        client_cert = None
+        if cert:
+            client_cert = (
+                cert.cert_path
+                if cert.key_path is None
+                else (cert.cert_path, cert.key_path)
+            )
         try:
             response: requests.Response = getattr(
                 self._session, method.lower()
-            )(url, json=json, timeout=self.request_timeout, headers=headers)
+            )(
+                url,
+                json=json,
+                timeout=self.request_timeout,
+                headers=headers,
+                cert=client_cert,
+            )
         except ConnectionError as exc:
             raise HTTPConnectionError(exc) from exc
         except requests.Timeout as exc:

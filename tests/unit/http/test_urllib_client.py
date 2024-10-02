@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Iterator, Optional
 from unittest.mock import MagicMock, patch
 
+from httprest.http.auth import BasicAuth
 from httprest.http.urllib_client import UrllibHTTPClient
 
 
@@ -71,14 +72,20 @@ def test_json_request():
             "http://example.com",
             json={"k": "v"},
             headers={"X-Test": "test"},
+            params={"p": "example value"},
+            auth=BasicAuth("user", "__secret__"),
         )
         assert resp.status_code == 200
         assert resp.json == {"k": "v"}
 
     comps.urllib_request.Request.assert_called_once_with(
-        "http://example.com",
+        "http://example.com?p=example+value",
         data=b'{"k": "v"}',
-        headers={"X-Test": "test", "Content-Type": "application/json"},
+        headers={
+            "X-Test": "test",
+            "Content-Type": "application/json",
+            "Authorization": "Basic dXNlcjpfX3NlY3JldF9f",
+        },
         method="GET",
     )
     comps.urllib_request.urlopen.assert_called_once_with("mocked", timeout=2)

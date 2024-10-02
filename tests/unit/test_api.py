@@ -19,6 +19,7 @@ def test_api_call():
             "headers": {"h": "v"},
             "json": {"k": "v"},
             "method": "POST",
+            "cert": None,
             "url": "http://fake.com/example/endpoint",
         },
     ]
