@@ -5,6 +5,8 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Optional
 
+from .auth import BaseAuth
+
 
 class HTTPRequestError(Exception):
     """Base HTTP request error."""
@@ -81,6 +83,7 @@ class HTTPClient(ABC):
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
     ) -> HTTPResponse:
+        # pylint: disable=too-many-arguments
         """Perform request.
 
         This method must handle all possible HTTP exceptions and raise them
@@ -95,13 +98,19 @@ class HTTPClient(ABC):
         url: str,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
+        auth: Optional[BaseAuth] = None,
     ) -> HTTPResponse:
+        # pylint: disable=too-many-arguments
         """Perform HTTP request with a given HTTP method.
 
         :param method: HTTP method to use
         :param url: API URL
         :param json: JSON data to post
         :param headers: headers
+        :param auth: authorization to use. If provided, the headers will be
+          extended
         """
         logging.info("%s %s", method.upper(), url)
+        if auth:
+            headers = auth.apply(headers or {})
         return self._request(method, url, json, headers=headers)
