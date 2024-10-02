@@ -29,7 +29,7 @@ The library exposes an `HTTPClient` interface and provides two implementations f
   1. `http.urllib_client.UrllibHTTPClient`: the default implementation, uses the `urllib` library under the hood
   2. `http.requests_client.RequestsHTTPClient`: uses the `requests` library under the hood
 
-You may also define your own HTTP client like this:
+### Custom HTTP client
 ```python
 from httprest.http import HTTPClient, HTTPResponse
 

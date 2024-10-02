@@ -4,7 +4,7 @@ import pytest
 import requests
 import responses
 
-from httprest.http import HTTPTimeoutError
+from httprest.http.errors import HTTPTimeoutError
 from httprest.http.requests_client import RequestsHTTPClient
 
 
