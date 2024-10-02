@@ -7,13 +7,9 @@ import urllib.parse
 import urllib.request
 from typing import Optional
 
-from .base import (
-    HTTPClient,
-    HTTPConnectionError,
-    HTTPRequestError,
-    HTTPResponse,
-    HTTPTimeoutError,
-)
+from httprest.http import errors as _errors
+
+from .base import HTTPClient, HTTPResponse
 from .cert import ClientCertificate
 
 
@@ -50,15 +46,15 @@ class UrllibHTTPClient(HTTPClient):
                     response.status, response.read(), dict(response.headers)
                 )
         except ConnectionError as exc:
-            raise HTTPConnectionError(exc) from exc
+            raise _errors.HTTPConnectionError(exc) from exc
         except TimeoutError as exc:
-            raise HTTPTimeoutError(exc) from exc
+            raise _errors.HTTPTimeoutError(exc) from exc
         except urllib.error.HTTPError as exc:
             return HTTPResponse(
                 exc.status or 500, exc.read(), dict(exc.headers)
             )
         except urllib.error.URLError as exc:
-            raise HTTPRequestError(exc) from exc
+            raise _errors.HTTPRequestError(exc) from exc
 
     def __str__(self) -> str:
         return self.__class__.__name__

@@ -1,17 +1,8 @@
 """Package for dealing with HTTP."""
 
-from .base import (
-    HTTPClient,
-    HTTPConnectionError,
-    HTTPRequestError,
-    HTTPResponse,
-    HTTPTimeoutError,
-)
+from .base import HTTPClient, HTTPResponse
 
 __all__ = [
     "HTTPClient",
-    "HTTPConnectionError",
-    "HTTPRequestError",
     "HTTPResponse",
-    "HTTPTimeoutError",
 ]

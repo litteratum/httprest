@@ -4,13 +4,9 @@ from typing import Optional
 
 import requests
 
-from .base import (
-    HTTPClient,
-    HTTPConnectionError,
-    HTTPRequestError,
-    HTTPResponse,
-    HTTPTimeoutError,
-)
+from httprest.http import errors as _errors
+
+from .base import HTTPClient, HTTPResponse
 from .cert import ClientCertificate
 
 
@@ -48,11 +44,11 @@ class RequestsHTTPClient(HTTPClient):
                 cert=client_cert,
             )
         except ConnectionError as exc:
-            raise HTTPConnectionError(exc) from exc
+            raise _errors.HTTPConnectionError(exc) from exc
         except requests.Timeout as exc:
-            raise HTTPTimeoutError(exc) from exc
+            raise _errors.HTTPTimeoutError(exc) from exc
         except requests.RequestException as exc:
-            raise HTTPRequestError(exc) from exc
+            raise _errors.HTTPRequestError(exc) from exc
 
         return HTTPResponse(
             response.status_code, response.content, dict(response.headers)

@@ -4,7 +4,8 @@ from typing import Any, Dict, List, Optional, Union
 
 from httprest.http.base import HTTPResponse
 
-from .base import HTTPClient, HTTPTimeoutError
+from .base import HTTPClient
+from .errors import HTTPTimeoutError
 from .cert import ClientCertificate
 
 
