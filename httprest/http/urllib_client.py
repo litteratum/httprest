@@ -40,7 +40,7 @@ class UrllibHTTPClient(HTTPClient):
                     headers=headers,
                     method=method.upper(),
                 ),
-                timeout=self.request_timeout,
+                timeout=self._timeout.read if self._timeout else None,
             ) as response:
                 return HTTPResponse(
                     response.status, response.read(), dict(response.headers)

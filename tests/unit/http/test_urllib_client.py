@@ -7,6 +7,7 @@ from typing import Iterator, Optional
 from unittest.mock import MagicMock, patch
 
 from httprest.http.auth import BasicAuth
+from httprest.http.timeout import Timeout
 from httprest.http.urllib_client import UrllibHTTPClient
 
 
@@ -46,7 +47,8 @@ class UrllibResponse:
 
 @contextmanager
 def patched_client(
-    request_timeout: float = 5, response: Optional[UrllibResponse] = None
+    timeout: Optional[Timeout] = None,
+    response: Optional[UrllibResponse] = None,
 ) -> Iterator[ClientComponents]:
     """Return patched client."""
     with patch(
@@ -56,14 +58,14 @@ def patched_client(
             response or UrllibResponse()
         )
         yield ClientComponents(
-            client=UrllibHTTPClient(request_timeout), urllib_request=mock
+            client=UrllibHTTPClient(timeout), urllib_request=mock
         )
 
 
 def test_json_request():
     """Test for the JSON request."""
     with patched_client(
-        request_timeout=2, response=UrllibResponse(json={"k": "v"})
+        Timeout(read=2), response=UrllibResponse(json={"k": "v"})
     ) as comps:
         comps.urllib_request.Request.return_value = "mocked"
 
