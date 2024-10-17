@@ -8,13 +8,14 @@ from httprest.http import errors as _errors
 
 from .base import HTTPClient, HTTPResponse
 from .cert import ClientCertificate
+from .timeout import Timeout
 
 
 class RequestsHTTPClient(HTTPClient):
     """`requests` HTTP client."""
 
-    def __init__(self, request_timeout: float = 5) -> None:
-        super().__init__(request_timeout)
+    def __init__(self, timeout: Optional[Timeout] = None) -> None:
+        super().__init__(timeout)
         self._session = requests.Session()
 
     def _request(
@@ -39,7 +40,11 @@ class RequestsHTTPClient(HTTPClient):
             )(
                 url,
                 json=json,
-                timeout=self.request_timeout,
+                timeout=(
+                    (self._timeout.connect, self._timeout.read)
+                    if self._timeout
+                    else None
+                ),
                 headers=headers,
                 cert=client_cert,
             )

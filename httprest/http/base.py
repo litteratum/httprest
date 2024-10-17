@@ -8,13 +8,14 @@ from urllib.parse import urlencode
 from .auth import BaseAuth
 from .cert import ClientCertificate
 from .response import HTTPResponse
+from .timeout import Timeout
 
 
 class HTTPClient(ABC):
     """Base HTTP client."""
 
-    def __init__(self, request_timeout: float = 5) -> None:
-        self.request_timeout = request_timeout
+    def __init__(self, timeout: Optional[Timeout] = None) -> None:
+        self._timeout = timeout
 
     @abstractmethod
     def _request(
