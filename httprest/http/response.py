@@ -14,7 +14,7 @@ class HTTPResponse:
     ) -> None:
         self.status_code = status_code
         self.body = body or b""
-        self._headers = headers
+        self.headers = headers
         self._json = None
 
     @property
@@ -35,7 +35,7 @@ class HTTPResponse:
         if self._json is not None:
             return self._json
 
-        headers = {key.lower(): val for key, val in self._headers.items()}
+        headers = {key.lower(): val for key, val in self.headers.items()}
         if "application/json" in headers.get("content-type", ""):
             try:
                 self._json = jsonlib.loads(self.body)
@@ -54,6 +54,6 @@ class HTTPResponse:
             f"{self.__class__.__name__}("
             f"status={self.status_code}, "
             f"body={self.body!r}, "
-            f"headers={self._headers}"
+            f"headers={self.headers}"
             ")"
         )
