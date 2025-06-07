@@ -3,7 +3,7 @@
 import json as jsonlib
 from typing import Optional
 
-from .errors import HTTPError, HTTPInvalidResponseError
+from .errors import HTTPClientError, HTTPInvalidResponseError, HTTPServerError
 
 
 class HTTPResponse:
@@ -25,9 +25,9 @@ class HTTPResponse:
     def raise_for_status(self) -> None:
         """Raise exception if the response is not successful."""
         if 400 <= self.status_code < 500:
-            raise HTTPError(f"Client error {self.status_code}")
+            raise HTTPClientError(self.status_code)
         if 500 <= self.status_code < 600:
-            raise HTTPError(f"Server error {self.status_code}")
+            raise HTTPServerError(self.status_code)
 
     @property
     def json(self) -> Optional[dict]:

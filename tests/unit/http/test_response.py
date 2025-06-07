@@ -5,7 +5,7 @@ import json as jsonlib
 import pytest
 
 from httprest.http import HTTPResponse
-from httprest.http.errors import HTTPError, HTTPInvalidResponseError
+from httprest.http.errors import HTTPClientError, HTTPInvalidResponseError
 
 
 def test_ok():
@@ -17,8 +17,10 @@ def test_ok():
 def test_raise_for_status():
     """Test for the raise_for_status method."""
     resp = HTTPResponse(400, b"", {})
-    with pytest.raises(HTTPError):
+    with pytest.raises(HTTPClientError) as exc:
         resp.raise_for_status()
+
+    assert exc.value.status_code == 400
 
 
 class TestJSON:
