@@ -17,6 +17,7 @@ def test_api_call():
         {
             "_method": "_request",
             "headers": {"h": "v"},
+            "data": None,
             "json": {"k": "v"},
             "method": "POST",
             "cert": None,

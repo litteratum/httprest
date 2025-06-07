@@ -1,6 +1,7 @@
 """API."""
 
 from typing import Optional as _Optional
+from typing import Union as _Union
 
 from httprest.http import HTTPClient as _HTTPClient
 from httprest.http import HTTPResponse as _HTTPResponse
@@ -31,6 +32,7 @@ class API:
         self,
         method: str,
         endpoint: str,
+        data: _Optional[_Union[dict, bytes]] = None,
         json: _Optional[dict] = None,
         headers: _Optional[dict] = None,
         params: _Optional[dict] = None,
@@ -47,6 +49,7 @@ class API:
         return self._http_client.request(
             method=method,
             url=self._build_url(endpoint),
+            data=data,
             json=json,
             headers=headers,
             params=params,

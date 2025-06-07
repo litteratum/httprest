@@ -5,7 +5,7 @@ import urllib
 import urllib.error
 import urllib.parse
 import urllib.request
-from typing import Optional
+from typing import Optional, Union
 
 from httprest.http import errors as _errors
 
@@ -21,12 +21,17 @@ class UrllibHTTPClient(HTTPClient):
         self,
         method: str,
         url: str,
+        data: Optional[Union[dict, bytes]] = None,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
         cert: Optional[ClientCertificate] = None,
     ) -> HTTPResponse:
         headers = headers or {}
-        data = None
+
+        if data is not None:
+            if isinstance(data, dict):
+                data = urllib.parse.urlencode(data).encode()  # type: ignore
+                headers["Content-Type"] = "application/x-www-form-urlencoded"
 
         if json:
             headers["Content-Type"] = "application/json"
