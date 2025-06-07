@@ -91,3 +91,23 @@ def test_json_request():
         method="GET",
     )
     comps.urllib_request.urlopen.assert_called_once_with("mocked", timeout=2)
+
+
+def test_form_data():
+    """Test for a form data."""
+    with patched_client(response=UrllibResponse(json={"k": "v"})) as comps:
+        comps.urllib_request.Request.return_value = "mocked"
+
+        resp = comps.client.request(
+            "post",
+            "http://example.com",
+            data={"k": "v"},
+        )
+        assert resp.status_code == 200
+
+    comps.urllib_request.Request.assert_called_once_with(
+        "http://example.com",
+        data=b"k=v",
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        method="POST",
+    )

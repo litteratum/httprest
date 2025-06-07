@@ -1,6 +1,6 @@
 """HTTP client which uses `requests` under the hood."""
 
-from typing import Optional
+from typing import Optional, Union
 
 import requests
 
@@ -22,6 +22,7 @@ class RequestsHTTPClient(HTTPClient):
         self,
         method: str,
         url: str,
+        data: Optional[Union[dict, bytes]] = None,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
         cert: Optional[ClientCertificate] = None,
@@ -39,6 +40,7 @@ class RequestsHTTPClient(HTTPClient):
                 self._session, method.lower()
             )(
                 url,
+                data=data,
                 json=json,
                 timeout=(
                     (self._timeout.connect, self._timeout.read)

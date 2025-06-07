@@ -2,7 +2,7 @@
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Union
 from urllib.parse import urlencode
 
 from .auth import BaseAuth
@@ -22,6 +22,7 @@ class HTTPClient(ABC):
         self,
         method: str,
         url: str,
+        data: Optional[Union[dict, bytes]] = None,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
         cert: Optional[ClientCertificate] = None,
@@ -43,6 +44,7 @@ class HTTPClient(ABC):
         self,
         method: str,
         url: str,
+        data: Optional[Union[dict, bytes]] = None,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
         params: Optional[dict] = None,
@@ -54,6 +56,8 @@ class HTTPClient(ABC):
 
         :param method: HTTP method to use
         :param url: API URL
+        :param data: data to post. If dict is provided,
+          application/x-www-form-urlencoded is set automatically
         :param json: JSON data to post
         :param headers: headers
         :param params: query parameters. If provided, the url will be extended
@@ -66,4 +70,6 @@ class HTTPClient(ABC):
             headers = auth.apply(headers or {})
         if params:
             url = f"{url}?{urlencode(params)}"
-        return self._request(method, url, json, headers=headers, cert=cert)
+        return self._request(
+            method, url, data, json, headers=headers, cert=cert
+        )

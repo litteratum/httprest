@@ -5,8 +5,8 @@ from typing import Any, Dict, List, Optional, Union
 from httprest.http.base import HTTPResponse
 
 from .base import HTTPClient
-from .errors import HTTPTimeoutError
 from .cert import ClientCertificate
+from .errors import HTTPTimeoutError
 
 
 class FakeHTTPClient(HTTPClient):
@@ -23,6 +23,7 @@ class FakeHTTPClient(HTTPClient):
         self,
         method: str,
         url: str,
+        data: Optional[Union[dict, bytes]] = None,
         json: Optional[dict] = None,
         headers: Optional[dict] = None,
         cert: Optional[ClientCertificate] = None,
@@ -33,6 +34,7 @@ class FakeHTTPClient(HTTPClient):
                 "_method": "_request",
                 "method": method,
                 "url": url,
+                "data": data,
                 "json": json,
                 "headers": headers,
                 "cert": cert,
