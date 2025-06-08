@@ -29,17 +29,22 @@ class FakeHTTPClient(HTTPClient):
         cert: Optional[ClientCertificate] = None,
     ) -> HTTPResponse:
         # pylint:disable=too-many-arguments
-        self.history.append(
-            {
-                "_method": "_request",
-                "method": method,
-                "url": url,
-                "data": data,
-                "json": json,
-                "headers": headers,
-                "cert": cert,
-            }
-        )
+        entry: dict = {
+            "_method": "_request",
+            "method": method,
+            "url": url,
+        }
+
+        if data is not None:
+            entry["data"] = data
+        if json is not None:
+            entry["json"] = json
+        if headers is not None:
+            entry["headers"] = headers
+        if cert is not None:
+            entry["cert"] = cert
+
+        self.history.append(entry)
         if not self._responses:
             raise HTTPTimeoutError("No response provided")
 
