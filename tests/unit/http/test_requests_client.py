@@ -68,3 +68,16 @@ def test_form_data():
         "post", "https://example.com", data={"k": "v"}
     )
     assert response.status_code == 200
+
+
+@responses.activate
+def test_query_params():
+    """Test query params."""
+    responses.get(
+        "https://example.com",
+        match=[matchers.query_param_matcher({"p": "hello/world"})],
+    )
+    response = RequestsHTTPClient().request(
+        "get", "https://example.com", params={"p": "hello/world"}
+    )
+    assert response.status_code == 200

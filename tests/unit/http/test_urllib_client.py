@@ -111,3 +111,21 @@ def test_form_data():
         headers={"Content-Type": "application/x-www-form-urlencoded"},
         method="POST",
     )
+
+
+def test_query_params():
+    """Test for a query params."""
+    with patched_client(response=UrllibResponse(json={"k": "v"})) as comps:
+        comps.urllib_request.Request.return_value = "mocked"
+
+        resp = comps.client.request(
+            "get", "http://example.com", params={"p": "hello/world"}
+        )
+        assert resp.status_code == 200
+
+    comps.urllib_request.Request.assert_called_once_with(
+        "http://example.com?p=hello%2Fworld",
+        method="GET",
+        data=None,
+        headers={},
+    )
