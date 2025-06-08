@@ -5,8 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+
+## [0.4.0] - 2025-06-08
 ### Changed
   * Make response headers public. **Warning**: backwards incompatible change
+  * `FakeHTTPClient`: don't append None values to the history. **Warning**: backwards incompatible change
+
+### Added
+  * `data` parameter for `HTTPClient.request` to send form or raw data
+  * `status_code` for the `HTTPError` exception
+  * Tests for the query params
 
 
 ## [0.3.0] - 2024-10-17
