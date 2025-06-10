@@ -33,6 +33,7 @@ lint:
 	flake8 $(PACKAGE) tests
 	pylint --rcfile=pyproject.toml $(PACKAGE) tests
 	mypy $(PACKAGE) tests
+	pip-audit
 
 .PHONY: testall
 testall: lint test
