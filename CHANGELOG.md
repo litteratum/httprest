@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## [0.4.1] - 2025-11-25
+### Changed
+  * `API._request`: the `endpoint` is now optional. When not provided (default), the base URL will be used
+  * `urljoin` is now used to combine base URL and endpoint
+
+### Added
+  * Python 3.13 and 3.14 officially supported
+
+### Fixed
+  * `pip-audit` vulnerability issues. Updated dependencies (minor)
+
+
 ## [0.4.0] - 2025-06-08
 ### Changed
   * Make response headers public. **Warning**: backwards incompatible change
