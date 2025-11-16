@@ -3,7 +3,7 @@
 import nox
 
 
-@nox.session(python=["3.9", "3.11", "3.12"])
+@nox.session(python=["3.9", "3.11", "3.12", "3.13", "3.14"])
 def tests(session):
     """Run tests."""
     session.run("make", "testdeps", external=True)
