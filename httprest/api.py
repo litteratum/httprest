@@ -1,5 +1,6 @@
 """API."""
 
+import urllib.parse
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -31,7 +32,7 @@ class API:
     def _request(
         self,
         method: str,
-        endpoint: str,
+        endpoint: _Optional[str] = None,
         data: _Optional[_Union[dict, bytes]] = None,
         json: _Optional[dict] = None,
         headers: _Optional[dict] = None,
@@ -42,7 +43,7 @@ class API:
         # pylint: disable=too-many-arguments
         """Make API request.
 
-        :param endpoint: API endpoint. Will be appended to the base URL
+        :param endpoint: API endpoint. Will be joined with the base URL
 
         Other parameters are the same as for the `HTTPClient.request` method
         """
@@ -57,8 +58,8 @@ class API:
             cert=cert,
         )
 
-    def _build_url(self, endpoint: str) -> str:
-        return f"{self._base_url}/{endpoint.strip('/')}"
+    def _build_url(self, endpoint: _Optional[str]) -> str:
+        return urllib.parse.urljoin(self._base_url, endpoint)
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(base_url='{self._base_url}')"
