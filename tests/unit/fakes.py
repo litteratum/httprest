@@ -4,16 +4,19 @@ from dataclasses import dataclass
 from typing import Optional
 
 from httprest import API
+from httprest.http import HTTPResponse
 from httprest.http.fake_client import FakeHTTPClient
 
 
 class _TestAPI(API):
     """API client for tests."""
 
-    def make_call(self):
+    def make_call(
+        self, endpoint: Optional[str] = "/example/endpoint/"
+    ) -> HTTPResponse:
         """Make API call."""
         return self._request(
-            "POST", "/example/endpoint/", json={"k": "v"}, headers={"h": "v"}
+            "POST", endpoint, json={"k": "v"}, headers={"h": "v"}
         )
 
 
