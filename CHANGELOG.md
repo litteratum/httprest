@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## [0.4.2] - 2026-02-26
+### Fixed
+  * Better URL concatenation (base_url + endpoint)
+
+
 ## [0.4.1] - 2025-11-25
 ### Changed
   * `API._request`: the `endpoint` is now optional. When not provided (default), the base URL will be used
