@@ -27,7 +27,7 @@ classifiers=[
 
 [tool.poetry.dependencies]
 python = "^3.9"
-requests = {version = "^2.32.3", optional = true}
+requests = {version = "^2", optional = true}
 
 [tool.poetry.extras]
 requests-client = ["requests"]
