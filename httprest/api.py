@@ -26,7 +26,7 @@ class API:
         :param http_client: HTTP client to use for making HTTP requests.
           If not provided, the default one will be used
         """
-        self._base_url = base_url.rstrip("/")
+        self._base_url = base_url.rstrip("/") + "/"
         self._http_client = http_client or _UrllibHTTPClient()
 
     def _request(
@@ -59,7 +59,9 @@ class API:
         )
 
     def _build_url(self, endpoint: _Optional[str]) -> str:
-        return urllib.parse.urljoin(self._base_url, endpoint)
+        return urllib.parse.urljoin(
+            self._base_url, endpoint.lstrip("/") if endpoint else ""
+        )
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(base_url='{self._base_url}')"
