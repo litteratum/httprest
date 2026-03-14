@@ -93,6 +93,30 @@ def test_json_request():
     comps.urllib_request.urlopen.assert_called_once_with("mocked", timeout=2)
 
 
+def test_empty_json_object():
+    """Test for an empty JSON request."""
+    with patched_client(
+        Timeout(read=2), response=UrllibResponse(json={"k": "v"})
+    ) as comps:
+        comps.urllib_request.Request.return_value = "mocked"
+
+        resp = comps.client.request(
+            "get",
+            "http://example.com",
+            json={},
+        )
+        assert resp.status_code == 200
+
+    comps.urllib_request.Request.assert_called_once_with(
+        "http://example.com",
+        data=b"{}",
+        headers={
+            "Content-Type": "application/json",
+        },
+        method="GET",
+    )
+
+
 def test_form_data():
     """Test for a form data."""
     with patched_client(response=UrllibResponse(json={"k": "v"})) as comps:

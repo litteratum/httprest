@@ -33,7 +33,7 @@ class UrllibHTTPClient(HTTPClient):
                 data = urllib.parse.urlencode(data).encode()  # type: ignore
                 headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-        if json:
+        if json is not None:
             headers["Content-Type"] = "application/json"
             data = _jsonlib.dumps(json).encode()
 
