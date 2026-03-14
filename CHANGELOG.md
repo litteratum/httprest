@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## [0.4.3] - 2026-03-14
+### Fixed
+  * `UrllibHTTPClient`: treat json={} as application/json
+
+### Changed
+  * Drop Python 3.9 support
+
+
 ## [0.4.2] - 2026-02-26
 ### Fixed
   * Better URL concatenation (base_url + endpoint)
