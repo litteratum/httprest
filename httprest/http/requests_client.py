@@ -1,5 +1,6 @@
 """HTTP client which uses `requests` under the hood."""
 
+from types import ModuleType
 from typing import Optional, Union
 
 import requests
@@ -12,11 +13,25 @@ from .timeout import Timeout
 
 
 class RequestsHTTPClient(HTTPClient):
-    """`requests` HTTP client."""
+    """`requests` HTTP client.
 
-    def __init__(self, timeout: Optional[Timeout] = None) -> None:
+    By default a reusable ``requests.Session`` is used (connection reuse).
+    Pass ``requester`` to override this:
+
+    * a custom ``requests.Session`` (e.g. with retries/adapters configured), or
+    * the ``requests`` module itself, to make independent module-level calls
+      with no connection reuse.
+    """
+
+    def __init__(
+        self,
+        timeout: Optional[Timeout] = None,
+        requester: Optional[Union[requests.Session, ModuleType]] = None,
+    ) -> None:
         super().__init__(timeout)
-        self._session = requests.Session()
+        self._requester = (
+            requester if requester is not None else requests.Session()
+        )
 
     def _request(
         self,
@@ -37,7 +52,7 @@ class RequestsHTTPClient(HTTPClient):
             )
         try:
             response: requests.Response = getattr(
-                self._session, method.lower()
+                self._requester, method.lower()
             )(
                 url,
                 data=data,
