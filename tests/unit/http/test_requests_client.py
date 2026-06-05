@@ -81,3 +81,34 @@ def test_query_params():
         "get", "https://example.com", params={"p": "hello/world"}
     )
     assert response.status_code == 200
+
+
+@responses.activate
+def test_requester_module():
+    """Test using the `requests` module directly (no session)."""
+    responses.add(responses.GET, "https://example.com", json={"k": "v"})
+    client = RequestsHTTPClient(requester=requests)
+    response = client.request("get", "https://example.com")
+    assert response.status_code == 200
+    assert response.json == {"k": "v"}
+
+
+@responses.activate
+def test_injected_session_is_used():
+    """An injected session must be the one actually performing the request.
+
+    The session carries a custom header that a default, internally-created
+    session would not have. The request is only matched (and succeeds) if it
+    goes through this exact session, so matching proves it is used -- no need
+    to inspect the client's internals.
+    """
+    responses.get(
+        "https://example.com",
+        json={"k": "v"},
+        match=[matchers.header_matcher({"X-Custom": "v"})],
+    )
+    session = requests.Session()
+    session.headers["X-Custom"] = "v"
+    client = RequestsHTTPClient(requester=session)
+    response = client.request("get", "https://example.com")
+    assert response.status_code == 200
